@@ -101,10 +101,10 @@ public:
      * What safety checks should you perform?
      */
     T* operator->() const {
-        if(ptr==nullptr){
-            throw std::runtime_error("The pointer is null");
+        if(ptr!=nullptr){
+            return ptr;
         }
-        return ptr;
+        return nullptr;
     }
 
     /**
@@ -128,9 +128,9 @@ public:
      * Should the wrapper still own the pointer after calling release()?
      */
     T* release() {
-        T* prev_ptr = ptr;
+        T* tmp_ptr = ptr;
         ptr = nullptr;
-        return prev_ptr;
+        return tmp_ptr;
     }
 
     /**
@@ -151,7 +151,7 @@ public:
      * Why might the explicit keyword be important here?
      */
     explicit operator bool() const {
-        return ptr; //placeholder
+        return ptr != nullptr; //placeholder
     }
 
     /**
