@@ -39,12 +39,12 @@ Playlist& Playlist::operator=(const Playlist& other) {
     if(this != &other){
 
         PlaylistNode* this_current = head;
-        PlaylistNode* this_next;
         while(this_current!=nullptr) {
-            this_next = this_current->next;
+            PlaylistNode* this_next = this_current->next;
             delete this_current;
             this_current = this_next;
         }
+        head = nullptr; 
 
         playlist_name = other.playlist_name;
         track_count = other.track_count;
@@ -66,6 +66,7 @@ Playlist& Playlist::operator=(const Playlist& other) {
 }
 
 void Playlist::add_track(AudioTrack* track) {
+
     if (!track) {
         std::cout << "[Error] Cannot add null track to playlist" << std::endl;
         return;
@@ -172,8 +173,9 @@ std::vector<AudioTrack*> Playlist::getTracks() const {
     std::vector<AudioTrack*> tracks;
     PlaylistNode* current = head;
     while (current) {
-        if (current->track)
+        if (current->track){
             tracks.push_back(current->track);
+        }
         current = current->next;
     }
     return tracks;
