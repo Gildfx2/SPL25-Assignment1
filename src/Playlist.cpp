@@ -12,11 +12,14 @@ Playlist::~Playlist() {
     #ifdef DEBUG
     std::cout << "Destroying playlist: " << playlist_name << std::endl;
     #endif
-    PlaylistNode* current = head;
-    while(current!=nullptr){
-        PlaylistNode* next_node = current->next;
-        delete current;
-        current=next_node;
+    PlaylistNode* this_current = head;
+    while(this_current!=nullptr){
+        PlaylistNode* next_node = this_current->next;
+        if(this_current->track != nullptr){
+            delete this_current->track;
+        }
+        delete this_current;
+        this_current=next_node;
     }
 }
 
@@ -28,7 +31,8 @@ Playlist::Playlist(const Playlist& other) :  head(nullptr), playlist_name(other.
     }
     PlaylistNode* this_tail = head;
     while(other_current != nullptr){
-        PlaylistNode* new_node = new PlaylistNode(other_current->track);
+        AudioTrack* cloned_track = other_current->track->clone().release();
+        PlaylistNode* new_node = new PlaylistNode(cloned_track);
         this_tail->next = new_node;
         other_current = other_current->next;
         this_tail = this_tail->next;
@@ -39,10 +43,13 @@ Playlist& Playlist::operator=(const Playlist& other) {
     if(this != &other){
 
         PlaylistNode* this_current = head;
-        while(this_current!=nullptr) {
-            PlaylistNode* this_next = this_current->next;
+        while(this_current!=nullptr){
+            PlaylistNode* next_node = this_current->next;
+            if(this_current->track != nullptr){
+                delete this_current->track;
+            }
             delete this_current;
-            this_current = this_next;
+            this_current=next_node;
         }
         head = nullptr; 
 
@@ -101,7 +108,9 @@ void Playlist::remove_track(const std::string& title) {
         } else {
             head = current->next;
         }
-
+        if (current->track != nullptr) {
+            delete current->track; 
+        }
         delete current;
         track_count--;
         std::cout << "Removed '" << title << "' from playlist" << std::endl;

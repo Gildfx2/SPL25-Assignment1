@@ -19,8 +19,8 @@ MixingEngineService::MixingEngineService()
  */
 MixingEngineService::~MixingEngineService() {
     std::cout << "[MixingEngineService] Cleaning up decks..." << std::endl;
-    //delete decks[0];
-    //delete decks[1];
+    delete decks[0];
+    delete decks[1];
     decks[0] = nullptr;
     decks[1] = nullptr;
 }
@@ -44,7 +44,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack& track) {
     size_t target = 1 - active_deck;
     std::cout << "[Deck Switch] Target deck: " << target << std::endl;
     if(decks[target]!=nullptr){
-        //delete decks[target];
+        delete decks[target];
         decks[target] = nullptr;
     }
     cloned_track->load();
@@ -55,10 +55,10 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack& track) {
         }
     }
     decks[target] = cloned_track.release();
-    std::cout << "[Load Complete] " << decks[target]->get_title() << " is now loaded on deck " << target << std::endl;
+    std::cout << "[Load Complete] ’" << decks[target]->get_title() << "’ is now loaded on deck " << target << std::endl;
     if(decks[active_deck]!=nullptr){
         std::cout << "[Unload] Unloading previous deck " << active_deck << " (" << decks[active_deck]->get_title() << ")" << std::endl;
-        //delete decks[active_deck];
+        delete decks[active_deck];
         decks[active_deck] = nullptr;
     }
     active_deck = target;
