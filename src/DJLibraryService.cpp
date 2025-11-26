@@ -8,7 +8,6 @@
 
 
 DJLibraryService::DJLibraryService(const Playlist& playlist) 
-<<<<<<< HEAD
     : playlist(playlist), library() {}
 
 /**
@@ -28,19 +27,19 @@ DJLibraryService::~DJLibraryService(){
  */
 void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo>& library_tracks) {
     //Todo: Implement buildLibrary method
-    std::cout << "TODO: Implement DJLibraryService::buildLibrary method\n"<< library_tracks.size() << " tracks to be loaded into library.\n";
+    //std::cout << "TODO: Implement DJLibraryService::buildLibrary method\n"<< library_tracks.size() << " tracks to be loaded into library.\n";
     AudioTrack* track;
-    for(int i = 0 ; i < library_tracks.size() ; i++){
+    for(size_t i = 0 ; i < library_tracks.size() ; i++){
         if(library_tracks[i].type == "MP3"){
-            AudioTrack* track = new MP3Track(library_tracks[i].title, library_tracks[i].artists, library_tracks[i].duration_seconds, library_tracks[i].bpm, 
+            track = new MP3Track(library_tracks[i].title, library_tracks[i].artists, library_tracks[i].duration_seconds, library_tracks[i].bpm, 
                 library_tracks[i].extra_param1, library_tracks[i].extra_param2);
-            std::cout << "MP3Track created: " << library_tracks[i].extra_param1 << " kbps" << std::endl;
+            //std::cout << "MP3Track created: " << library_tracks[i].extra_param1 << " kbps" << std::endl;
             library.push_back(track);
         }
         else if(library_tracks[i].type == "WAV"){
-            AudioTrack* track = new WAVTrack(library_tracks[i].title, library_tracks[i].artists, library_tracks[i].duration_seconds, library_tracks[i].bpm, 
+            track = new WAVTrack(library_tracks[i].title, library_tracks[i].artists, library_tracks[i].duration_seconds, library_tracks[i].bpm, 
                 library_tracks[i].extra_param1, library_tracks[i].extra_param2);
-            std::cout << "WAVTrack created: " << library_tracks[i].extra_param1 << "Hz/" << library_tracks[i].extra_param2 << "bit" << std::endl;
+            //std::cout << "WAVTrack created: " << library_tracks[i].extra_param1 << "Hz/" << library_tracks[i].extra_param2 << "bit" << std::endl;
             library.push_back(track);
         }
     }
@@ -90,11 +89,11 @@ AudioTrack* DJLibraryService::findTrack(const std::string& track_title) {
 void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name, 
                                                const std::vector<int>& track_indices) {
     // Your implementation here
-    std::cout << " [INFO] Loading playlist: " << playlist_name << std::endl;
+    std::cout << "[INFO] Loading playlist: " << playlist_name << std::endl;
     playlist = Playlist(playlist_name);
     int counter = 0;
-    for(int i = 0 ; i < track_indices.size() ; i++){
-        if(track_indices[i] > 0 && track_indices[i] <= library.size()){
+    for(size_t i = 0 ; i < track_indices.size() ; i++){
+        if(track_indices[i] > 0 && track_indices[i] <= static_cast<int>(library.size())){
             AudioTrack* tmp_track = library[track_indices[i]-1];
             AudioTrack* cloned_track = tmp_track->clone().release();
             if(cloned_track == nullptr){
@@ -104,7 +103,6 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name,
                 cloned_track->load();
                 cloned_track->analyze_beatgrid();
                 playlist.add_track(cloned_track);
-                std::cout << "Added ’" << cloned_track->get_title() << "’ to playlist ’" << playlist_name << "’" << std::endl;
                 counter++;
             }
         }
@@ -112,7 +110,7 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name,
             std::cout << "[WARNING] Invalid track index: " << track_indices[i] << std::endl;
         }
     }
-    std::cout << "[INFO] Playlist loaded: " << playlist_name << "(" << counter << " tracks)" << std::endl;
+    std::cout << "[INFO] Playlist loaded: " << playlist_name << " (" << counter << " tracks)" << std::endl;
 }
 /**
  * TODO: Implement getTrackTitles method
