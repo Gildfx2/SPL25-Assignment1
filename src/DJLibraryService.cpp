@@ -8,7 +8,8 @@
 
 
 DJLibraryService::DJLibraryService(const Playlist& playlist) 
-    : playlist(playlist) {}
+<<<<<<< HEAD
+    : playlist(playlist), library() {}
 
 /**
  * Destructor

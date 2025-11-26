@@ -8,6 +8,7 @@ AudioTrack::AudioTrack(const std::string& title, const std::vector<std::string>&
     : title(title), artists(artists), duration_seconds(duration), bpm(bpm),  waveform_data(nullptr),
       waveform_size(waveform_samples){
 
+
     // Allocate memory for waveform analysis
     waveform_data = new double[waveform_size];
 
