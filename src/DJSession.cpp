@@ -165,7 +165,9 @@ void DJSession::simulate_dj_performance() {
                     std::cout << "\n–- Processing: " << track_title << "–-" << std::endl;
                     stats.tracks_processed++;
                     load_track_to_controller(track_title);
+                    controller_service.displayCacheStatus();
                     load_track_to_mixer_deck(track_title);
+                    mixing_service.displayDeckStatus();
                 }
                 print_session_summary();
                 stats = SessionStats(); //reset statics
@@ -187,7 +189,9 @@ void DJSession::simulate_dj_performance() {
                     std::cout << "\n–- Processing: " << track_title << "–-" << std::endl;
                     stats.tracks_processed++;
                     load_track_to_controller(track_title);
+                    controller_service.displayCacheStatus();
                     load_track_to_mixer_deck(track_title);
+                    mixing_service.displayDeckStatus();
                 }
                 print_session_summary();
                 stats = SessionStats(); //reset statics
