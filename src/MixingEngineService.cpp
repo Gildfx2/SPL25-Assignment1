@@ -47,18 +47,18 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack& track) {
     }
     cloned_track->load();
     cloned_track->analyze_beatgrid();
-    if(auto_sync && decks[active_deck]){
+    if(auto_sync){
         if(!can_mix_tracks(cloned_track)){
             sync_bpm(cloned_track);
         }
     }
     decks[target] = cloned_track.release();
     std::cout << "[Load Complete] '" << decks[target]->get_title() << "' is now loaded on deck " << target << std::endl;
-    if(decks[active_deck]!=nullptr){
-        std::cout << "[Unload] Unloading previous deck " << active_deck << " (" << decks[active_deck]->get_title() << ")" << std::endl;
-        delete decks[active_deck];
-        decks[active_deck] = nullptr;
-    }
+    // if(decks[active_deck]!=nullptr){
+    //     std::cout << "[Unload] Unloading previous deck " << active_deck << " (" << decks[active_deck]->get_title() << ")" << std::endl;
+    //     delete decks[active_deck];
+    //     decks[active_deck] = nullptr;
+    // }
     active_deck = target;
     std::cout << "[Active Deck] Switched to deck " << target << std::endl;
     
@@ -108,5 +108,8 @@ void MixingEngineService::sync_bpm(const PointerWrapper<AudioTrack>& track) cons
         int new_bpm = (original_bpm + active_bpm) / 2;        
         track->set_bpm(new_bpm);
         std::cout << "[Sync BPM] Syncing BPM from " << original_bpm << " to " << new_bpm << std::endl;
+    }
+    else{
+        std::cout << "[Sync BPM] Cannot sync - one of the decks is empty." << std::endl;
     }
 }

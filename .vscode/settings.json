@@ -117,5 +117,6 @@
     "editor.tabSize": 4,
     
     // Terminal settings
-    "terminal.integrated.defaultProfile.linux": "fish"
+    "terminal.integrated.defaultProfile.linux": "fish",
+    "terminal.integrated.scrollback": 3000
 }
